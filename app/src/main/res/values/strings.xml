@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pool Pulse</string>
+    <string name="subtitle_proactive_care">PROACTIVE AI CARE</string>
+    <string name="tab_pulse_dash">Pulse Dash</string>
+    <string name="tab_reminders">Reminders</string>
+    <string name="tab_chem_locker">Chem Locker</string>
+    <string name="tab_cost_log">Cost &amp; Log</string>
+    <string name="btn_open_pool">Open Pool</string>
+    <string name="btn_close_pool">Close Pool</string>
+    <string name="btn_add_reminder">+ Add Custom Reminder</string>
+    <string name="btn_brand_search">Brand Search / Scan Barcode</string>
+</resources>
