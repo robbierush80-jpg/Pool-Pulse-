@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Pool Pulse</title>
+<link rel="manifest" href="manifest.json">
+
+<style>
+:root{--bg:#090e1a;--c:#131d31;--a:#1b2842;--cy:#00e5ff;--bl:#2979ff;--or:#ff9100;--ok:#00e676;--bd:#ff5252;--tx:#f8fafc;--mu:#94a3b8;--br:rgba(255,255,255,0.1)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--tx);margin:0;padding:0 0 95px;font-family:-apple-system,sans-serif}
+.hdr{background:#131d31f2;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--br);position:sticky;top:0;z-index:50}
+.logo{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--cy),var(--bl));display:flex;align-items:center;justify-content:center;font-weight:900;color:#090e1a}
+.vpill{background:var(--a);border:1.5px solid var(--cy);padding:6px 12px;border-radius:18px;font-size:12px;font-weight:800;color:var(--cy);cursor:pointer}
+.wrap{padding:12px 14px;max-width:540px;margin:0 auto}
+.card{background:var(--c);border:1px solid var(--br);border-radius:18px;padding:16px;margin-bottom:14px}
+.hero{background:radial-gradient(circle at top right,#14382d,var(--c) 75%);border-color:#00e67655}
+.tbox{background:#090e1a99;border:1px solid var(--br);border-radius:10px;padding:9px 12px;margin-top:10px;font-size:12px}
+.srow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 8px}
+.sbtn{background:var(--c);border:1px solid #00e5ff44;color:var(--tx);padding:12px;border-radius:13px;font-size:12.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.wx{background:linear-gradient(145deg,#162440,#111a2e);border-color:#00e5ff33}
+.wxg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.wxd{background:#090e1aa6;border:1px solid var(--br);border-radius:10px;padding:8px 4px;text-align:center;font-size:11px}
+.adv{background:#00e5ff17;border-left:3px solid var(--cy);padding:8px 10px;border-radius:6px;font-size:11.5px}
+.shd{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 10px;font-size:12px;font-weight:800;color:var(--mu);text-transform:uppercase}
+.shd span{color:var(--cy);font-size:11px;text-transform:none}
+.vc{display:flex;align-items:stretch;justify-content:space-between;gap:14px;padding:22px 18px;margin-bottom:16px;border-radius:20px;box-shadow:0 8px 20px #0005}
+.vl{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between}
+.vtop{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;margin-bottom:4px}
+.pill{font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0}
+.erbtn{background:#1b2842;border:1px solid #00e5ff66;color:var(--cy);border-radius:8px;padding:5px 10px;font-size:10.5px;font-weight:800;cursor:pointer;white-space:nowrap;margin-bottom:8px;width:100%;text-align:center}
+.trk{position:relative;height:12px;background:#0b1220;border-radius:6px;border:1px solid var(--br);margin:14px 0 18px}
+.zn{position:absolute;top:0;bottom:0;background:#00e67638;border-left:1.5px dashed var(--ok);border-right:1.5px dashed var(--ok)}
+.mt{position:absolute;top:-4px;width:4px;height:20px;background:var(--or);transform:translateX(-50%);z-index:2;border-radius:2px}
+.mt::after{content:'▲';position:absolute;bottom:-12px;left:-3px;font-size:9px;color:var(--or)}
+.ma{position:absolute;top:50%;width:17px;height:17px;border-radius:50%;border:2.5px solid #090e1a;transform:translate(-50%,-50%);z-index:3}
+.leg{display:flex;justify-content:space-between;font-size:10.5px;color:#64748b;font-weight:600}
+.vr{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;min-width:108px;padding-left:14px;border-left:1px solid var(--br)}
+.inw{display:flex;align-items:baseline;justify-content:flex-end;background:var(--bg);border:1.5px solid #00e5ff66;border-radius:12px;padding:8px 10px;width:100%}
+.vin{background:0;border:0;color:var(--tx);font-size:22px;font-weight:800;width:58px;text-align:right;outline:0}
+.pcard{background:linear-gradient(145deg,#182844,#131d31);border:1.5px solid #00e5ff66;border-left:5px solid var(--cy);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:0 5px 15px #0006}
+.btn{background:linear-gradient(135deg,var(--cy),var(--bl));border:0;color:#090e1a;padding:9px 12px;border-radius:9px;font-size:11.5px;font-weight:900;cursor:pointer}
+.tag{display:inline-block;margin-top:5px;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;background:#ffffff14;margin-right:4px}
+.doc{background:linear-gradient(145deg,#19223c,#121a2d);border:1.5px solid #b388ff55;border-radius:16px;padding:14px;margin-bottom:10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chip{background:var(--a);border:1px solid var(--br);color:var(--cy);padding:5px 9px;border-radius:12px;font-size:11px;font-weight:700;cursor:pointer}
+.nav{position:fixed;bottom:0;left:0;right:0;height:64px;background:#0d1424f7;border-top:1px solid var(--br);display:flex;justify-content:space-around;align-items:center;z-index:99}
+.ni{display:flex;flex-direction:column;align-items:center;font-size:10.5px;font-weight:700;color:var(--mu);cursor:pointer}
+.ni.act{color:var(--cy)}
+.tv{display:none}.tv.act{display:block}
+.mdl{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:14px;z-index:200}
+.mdl.open{display:flex}
+.mbox{background:var(--c);border:1px solid var(--cy);border-radius:16px;padding:16px;width:100%;max-width:390px;max-height:88vh;overflow-y:auto}
+.inp{width:100%;padding:8px;border-radius:8px;border:1px solid var(--br);background:var(--bg);color:var(--tx);margin:4px 0 10px}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div style="display:flex;align-items:center;gap:10px"><div class="logo">P</div><div><b style="font-size:17px">Pool Pulse</b><div style="font-size:9.5px;color:var(--cy);font-weight:700">PROACTIVE AI CARE</div></div></div>
+  <button class="vpill" onclick="openVol()">⚙️ <span id="vDisp">7,750</span> GAL</button>
+</header>
+
+<div class="wrap">
+  <div id="t-dash" class="tv act">
+    <div class="card hero">
+      <div style="display:flex;align-items:center;gap:10px"><span id="hIcon" style="font-size:24px">🎉</span><div><b id="hTitle" style="font-size:16px">Congrats! Water is Balanced</b><div style="font-size:11.5px;color:var(--mu)">All vitals and CSI saturation are in protection range.</div></div></div>
+      <div class="tbox"><b style="color:var(--cy);font-size:10px;text-transform:uppercase">📅 Tomorrow's Maintenance Outlook</b><ul id="tmrwList" style="margin:4px 0 0;padding-left:16px"></ul></div>
+    </div>
+
+    <div class="card wx">
+      <div style="display:flex;justify-content:space-between;align-items:center"><b style="color:var(--cy);font-size:12.5px">📍 3-Day Forecast Outlook</b>
+        <select id="wxMode" class="inp" style="width:auto;margin:0;padding:4px 8px;font-size:11px" onchange="calc()">
+          <option value="live">Live Weather</option><option value="rain">Incoming Rain Tomorrow</option><option value="heat">92°F UV Heatwave</option>
+        </select>
+      </div>
+      <div class="wxg" id="wxGrid"></div>
+      <div class="adv"><b style="color:var(--cy);display:block;font-size:10px">⚡ PULSE PROACTIVE ADVISOR</b><span id="advTxt"></span></div>
+    </div>
+
+    <div class="shd"><b>Water Vitals</b><span>Tap ⚙ Edit Range to Customize Targets</span></div>
+    <div id="vitalsBox"></div>
+
+    <div class="shd"><b>Smart Prescription with Smart Scale</b><span id="dCount">0 Actions</span></div>
+    <div id="prescBox"></div>
+
+    <div class="shd"><b>Pool Doc</b><span>Reads Your Live Vitals</span></div>
+    <div class="doc">
+      <div style="font-size:12px;color:var(--mu)">Still having water issues after dosing? Tap a symptom or ask Pool Doc:</div>
+      <div class="chips">
+        <span class="chip" onclick="docAns('cloudy')">☁️ Cloudy Water</span>
+        <span class="chip" onclick="docAns('algae')">🦠 Green / Algae</span>
+        <span class="chip" onclick="docAns('foam')">🫧 Foamy Water</span>
+        <span class="chip" onclick="docAns('burn')">👀 Burning Eyes</span>
+      </div>
+      <div style="display:flex;gap:6px">
+        <input type="text" id="docInp" class="inp" style="margin:0" placeholder="Type a question for Pool Doc...">
+        <button class="btn" onclick="docAns(document.getElementById('docInp').value)">Go</button>
+      </div>
+      <div id="docReply" style="margin-top:8px;font-size:12px;line-height:1.45;color:#e2e8f0;background:#090e1a99;padding:9px 11px;border-radius:8px;border-left:3px solid #b388ff">🩺 <b>Pool Doc:</b> Test your vitals and apply any Prescriptions above first. Tap a symptom above if issues persist!</div>
+    </div>
+
+    <div class="srow">
+      <button class="sbtn" onclick="openSeason('open')">☀️ Open Pool</button>
+      <button class="sbtn" onclick="openSeason('close')">❄️ Close Pool</button>
+    </div>
+  </div>
+
+  <div id="t-tasks" class="tv"><div class="shd"><b>Testing & Maintenance Reminders</b></div><div id="taskBox"></div><button class="btn" style="width:100%;padding:12px" onclick="addTaskPrompt()">+ Add Custom Reminder</button></div>
+  <div id="t-inv" class="tv">
+    <div class="card" style="display:grid;grid-template-columns:repeat(3,1fr);text-align:center">
+      <div><small style="color:var(--mu)">SPEND</small><br><b id="sSpend" style="color:var(--cy)">$48.50</b></div>
+      <div><small style="color:var(--mu)">DOSES</small><br><b id="sDoses" style="color:var(--cy)">0</b></div>
+      <div><small style="color:var(--mu)">USED VAL</small><br><b id="sUsed" style="color:var(--cy)">$0.00</b></div>
+    </div>
+    <button class="btn" style="width:100%;padding:12px;margin-bottom:12px" onclick="openRestockModal()">🔍 Brand Search / 📷 Scan Barcode</button>
+    <div id="invBox"></div>
+  </div>
+  <div id="t-logs" class="tv"><div class="shd"><b>Dose History & Receipts</b></div><div id="logBox"></div></div>
+</div>
+
+<!-- EDIT RANGE & TARGET MODAL -->
+<div class="mdl" id="mRange"><div class="mbox">
+  <h3 id="rTitle" style="margin:0 0 8px;color:var(--cy)">Edit Chemical Range & Target</h3>
+  <input type="hidden" id="rEditId">
+  <label style="font-size:11px;color:var(--mu)">Ideal Minimum</label>
+  <input type="number" step="any" id="rMinInp" class="inp" onfocus="this.value=''">
+  <label style="font-size:11px;color:var(--mu)">Ideal Maximum</label>
+  <input type="number" step="any" id="rMaxInp" class="inp" onfocus="this.value=''">
+  <label style="font-size:11px;color:var(--or);font-weight:700">Target Level (▲ Orange Marker)</label>
+  <input type="number" step="any" id="rTargInp" class="inp" onfocus="this.value=''">
+  <div style="display:flex;gap:8px;margin-top:6px">
+    <button class="btn" style="flex:1;background:var(--a);color:var(--tx)" onclick="document.getElementById('mRange').classList.remove('open')">Cancel</button>
+    <button class="btn" style="flex:1" onclick="saveRangeEdit()">Save Target</button>
+  </div>
+</div></div>
+
+<!-- RESTOCK & BARCODE SCANNER MODAL -->
+<div class="mdl" id="mRestock"><div class="mbox">
+  <h3 style="margin:0 0 8px;color:var(--cy)">Brand Lookup & Barcode Scan</h3>
+  <div style="display:flex;gap:6px">
+    <input type="text" id="bSearch" class="inp" placeholder="Type brand (e.g. COLORX PH REDUCER)..." oninput="matchBrand(this.value)">
+    <button type="button" class="btn" style="background:var(--a);color:var(--cy);white-space:nowrap;padding:8px" onclick="toggleScanner()">📷 Scan UPC</button>
+  </div>
+  <div id="scannerArea" style="display:none;background:#000;border-radius:8px;overflow:hidden;margin-bottom:8px;position:relative;border:1px solid var(--cy)">
+    <video id="scanVideo" playsinline muted style="width:100%;height:130px;object-fit:cover;display:block"></video>
+    <div style="position:absolute;top:50%;left:10%;right:10%;height:2px;background:#ff5252"></div>
+  </div>
+  <div id="bMatchTxt" style="font-size:11px;color:var(--ok);margin-bottom:8px;font-weight:700"></div>
+  <select id="rSlot" class="inp"><option value="fc">Pool Essentials 10% Liquid Chlorine (fl oz)</option><option value="ph">Clorox pH Down 93.2% Dry Acid (lbs)</option><option value="alk">Arm & Hammer Baking Soda 100% (lbs)</option><option value="cya">Clorox Stabilizer 100% CYA (lbs)</option></select>
+  <label style="font-size:11px">Amount on Bottle/Bag</label><input type="number" id="rQty" class="inp" value="5" onfocus="this.value=''">
+  <label style="font-size:11px">Price Paid ($) & Store</label>
+  <div style="display:flex;gap:6px"><input type="number" id="rCost" class="inp" value="14.98" onfocus="this.value=''"><input type="text" id="rStore" class="inp" value="Walmart"></div>
+  <div style="display:flex;gap:8px"><button class="btn" style="flex:1;background:var(--a);color:var(--tx)" onclick="closeRestockModal()">Cancel</button><button class="btn" style="flex:1" onclick="saveRestock()">Save Receipt</button></div>
+</div></div>
+
+<!-- OPEN / CLOSE POOL MODAL -->
+<div class="mdl" id="mSeason"><div class="mbox">
+  <h3 id="sTitle" style="margin:0 0 8px;color:var(--cy)">Pool Guide</h3>
+  <div id="sSteps" style="font-size:12px;line-height:1.5;margin-bottom:10px"></div>
+  <div id="notifActionBox" style="background:#090e1a99;border:1px solid var(--br);border-radius:10px;padding:10px;margin-bottom:10px;text-align:center"></div>
+  <button class="btn" style="width:100%" onclick="document.getElementById('mSeason').classList.remove('open')">Close Window</button>
+</div></div>
+
+<!-- VOLUME CALCULATOR MODAL -->
+<div class="mdl" id="mVol"><div class="mbox">
+  <h3 style="margin:0 0 8px;color:var(--cy)">Pool Volume Calculator</h3>
+  <select id="vShape" class="inp" onchange="updVolUI()"><option value="dir">Enter Gallons Directly</option><option value="rnd">Round Pool Calculator</option><option value="rct">Rectangular / Oval Calculator</option></select>
+  <div id="vDirBox"><label style="font-size:11px">Gallons</label><input type="number" id="vGalInp" class="inp" value="7750" onfocus="this.value=''"></div>
+  <div id="vDimBox" style="display:none">
+    <label style="font-size:11px">Diameter / Length (ft)</label><input type="number" id="vLen" class="inp" value="20" oninput="calcVolPreview()">
+    <div id="vWidRow" style="display:none"><label style="font-size:11px">Width (ft)</label><input type="number" id="vWid" class="inp" value="12" oninput="calcVolPreview()"></div>
+    <label style="font-size:11px">Avg Depth (ft)</label><input type="number" step="0.5" id="vDep" class="inp" value="3.3" oninput="calcVolPreview()">
+    <div style="color:var(--cy);font-size:12px;font-weight:800;margin-bottom:8px">Calculated: <span id="vPre">7,750</span> Gal</div>
+  </div>
+  <div style="display:flex;gap:8px"><button class="btn" style="flex:1;background:var(--a);color:var(--tx)" onclick="document.getElementById('mVol').classList.remove('open')">Cancel</button><button class="btn" style="flex:1" onclick="saveVol()">Save Volume</button></div>
+</div></div>
+
+<nav class="nav">
+  <div class="ni act" id="n-dash" onclick="tab('dash')"><span>◉</span><span>Pulse Dash</span></div>
+  <div class="ni" id="n-tasks" onclick="tab('tasks')"><span>☑</span><span>Reminders</span></div>
+  <div class="ni" id="n-inv" onclick="tab('inv')"><span>▤</span><span>Chem Locker</span></div>
+  <div class="ni" id="n-logs" onclick="tab('logs')"><span>🧾</span><span>Cost & Log</span></div>
+</nav>
+
+<script>
+let VOL = 7750, stats = {spend:48.50, doses:0, used:0}, notifsPaused = false, liveWxCache = null, scanStream = null;
+const VCFG = [
+  {id:'fc', n:'Free Chlorine (FC)', u:'ppm', v:4.0, min:0, max:15, iMin:2.6, iMax:8.0, t:5.5, custom:false},
+  {id:'pH', n:'pH Level', u:'pH', v:7.5, min:6.8, max:8.2, iMin:7.4, iMax:7.6, t:7.5, custom:false},
+  {id:'alk',n:'Total Alkalinity (TA)', u:'ppm', v:80, min:40, max:200, iMin:70, iMax:90, t:80, custom:false},
+  {id:'cya',n:'Stabilizer (CYA)', u:'ppm', v:30, min:0, max:100, iMin:30, iMax:50, t:40, custom:false},
+  {id:'ch', n:'Calcium Hardness (CH)', u:'ppm', v:200, min:50, max:450, iMin:150, iMax:250, t:200, custom:false},
+  {id:'temp',n:'Water Temperature', u:'°F', v:78, min:40, max:95, iMin:76, iMax:86, t:82, custom:false}
+];
+let inv = {
+  fc: {n:'Pool Essentials Liquid Chlorine', c:'10% Sodium Hypochlorite', q:256, u:'fl oz', p:0.045, s:'Walmart'},
+  ph: {n:'Clorox Pool&Spa pH Down', c:'93.2% Sodium Bisulfate', q:5.0, u:'lbs', p:3.00, s:'Lowe\'s'},
+  alk:{n:'Arm & Hammer Baking Soda', c:'100% Sodium Bicarbonate', q:5.0, u:'lbs', p:1.50, s:'Walmart'},
+  cya:{n:'Clorox Chlorine Stabilizer', c:'100% Cyanuric Acid', q:4.0, u:'lbs', p:4.99, s:'Walmart'}
+};
+let tasks = [{n:'Test Free Chlorine & pH',t:'5:00 PM',d:1},{n:'Vacuum Pool & Brush Walls',t:'10:00 AM',d:2}];
+let logs = [{t:'Pool Pulse Initialized',s:'7,750 Gal Profile Active',a:'Ready'}];
+
+function buildVitals() {
+  document.getElementById('vitalsBox').innerHTML = VCFG.map(x => `
+    <div class="card vc"><div class="vl">
+      <div class="vtop"><b style="font-size:15.5px">${x.n}</b><span class="pill" id="pl-${x.id}">IN RANGE</span></div>
+      <div style="font-size:11.5px;color:var(--mu);margin-top:2px" id="tg-${x.id}">Ideal: ${x.iMin}–${x.iMax} | Target: ${x.t}</div>
+      <div class="trk"><div class="zn" id="zn-${x.id}"></div><div class="mt" id="mt-${x.id}"></div><div class="ma" id="ma-${x.id}"></div></div>
+      <div class="leg"><span>${x.min}</span><span style="color:var(--or)" id="lg-${x.id}">Target: ${x.t}</span><span>${x.max} ${x.u}</span></div>
+    </div><div class="vr">
+      <button type="button" class="erbtn" onclick="openRangeEdit('${x.id}')">⚙ Edit Range</button>
+      <div class="inw" onclick="document.getElementById('in-${x.id}').focus()"><input type="number" step="any" class="vin" id="in-${x.id}" value="${x.v}" data-prev="${x.v}" onfocus="this.dataset.prev=this.value;this.value=''" onblur="if(this.value==='')this.value=this.dataset.prev;calc()" oninput="calc()"><span style="font-size:11.5px;color:var(--mu);margin-left:3px">${x.u}</span></div>
+      <span style="font-size:9px;color:#64748b;margin-top:5px">TAP TO CLEAR</span>
+    </div></div>`).join('') + `
+    <div class="card vc" style="border-color:#00e5ff55"><div class="vl">
+      <div class="vtop"><b style="font-size:15.5px">Calcite Saturation (CSI)</b><span class="pill" id="pl-csi">BALANCED</span></div>
+      <div style="font-size:11.5px;color:var(--mu);margin-top:2px">Balanced Zone: -0.30 to +0.30 | Target: 0.00</div>
+      <div class="trk"><div class="zn" id="zn-csi"></div><div class="mt" id="mt-csi"></div><div class="ma" id="ma-csi"></div></div>
+      <div class="leg"><span>-1.0 Corrosive</span><span style="color:var(--or)">Target: 0.00</span><span>+1.0 Scaling</span></div>
+    </div><div class="vr" style="justify-content:center"><div class="inw"><b id="csiVal" style="font-size:19px;color:var(--cy)">0.00</b><span style="font-size:11px;color:var(--mu);margin-left:3px">CSI</span></div><span style="font-size:9px;color:#64748b;margin-top:5px">AUTO-CALC</span></div></div>`;
+}
+
+function openRangeEdit(id) {
+  const item = VCFG.find(x => x.id === id);
+  if (!item) return;
+  document.getElementById('rEditId').value = id;
+  document.getElementById('rTitle').textContent = `Edit ${item.n}`;
+  document.getElementById('rMinInp').value = item.iMin;
+  document.getElementById('rMaxInp').value = item.iMax;
+  document.getElementById('rTargInp').value = item.t;
+  document.getElementById('mRange').classList.add('open');
+}
+
+function saveRangeEdit() {
+  const id = document.getElementById('rEditId').value, item = VCFG.find(x => x.id === id);
+  if (item) {
+    const nMin = parseFloat(document.getElementById('rMinInp').value), nMax = parseFloat(document.getElementById('rMaxInp').value), nTarg = parseFloat(document.getElementById('rTargInp').value);
+    if (!isNaN(nMin)) item.iMin = nMin;
+    if (!isNaN(nMax)) item.iMax = nMax;
+    if (!isNaN(nTarg)) item.t = nTarg;
+    item.custom = true;
+    document.getElementById('tg-'+id).textContent = `Ideal: ${item.iMin}–${item.iMax} | Target: ${item.t}`;
+    document.getElementById('lg-'+id).textContent = `Target: ${item.t}`;
+  }
+  document.getElementById('mRange').classList.remove('open');
+  calc();
+}
+
+function setBar(id, val, min, max, iMin, iMax, t) {
+  const pct = n => Math.min(96, Math.max(4, ((n - min) / (max - min)) * 100));
+  document.getElementById('zn-'+id).style.left = pct(iMin)+'%';
+  document.getElementById('zn-'+id).style.width = Math.max(4, pct(iMax)-pct(iMin))+'%';
+  document.getElementById('mt-'+id).style.left = pct(t)+'%';
+  const d = document.getElementById('ma-'+id), ok = val >= iMin && val <= iMax;
+  d.style.left = pct(val)+'%'; d.style.background = ok ? '#00e676' : '#ff5252';
+  const p = document.getElementById('pl-'+id);
+  p.textContent = ok ? 'IN RANGE' : (val < iMin ? 'LOW' : 'HIGH');
+  p.style.color = ok ? '#00e676' : '#ff5252'; p.style.background = ok ? '#00e67626' : '#ff525226';
+}
+
+function fmtDry(oz) { return oz < 16 ? `${oz.toFixed(1)} dry oz` : `${(oz/16).toFixed(2)} lbs (${Math.floor(oz/16)} lb ${(oz%16).toFixed(1)} oz)`; }
+
+async function toggleScanner() {
+  const area = document.getElementById('scannerArea');
+  if (area.style.display === 'block') { stopScanner(); return; }
+  area.style.display = 'block';
+  try {
+    const video = document.getElementById('scanVideo');
+    scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    video.srcObject = scanStream;
+    await video.play();
+    if ('BarcodeDetector' in window) {
+      const detector = new BarcodeDetector({ formats: ['upc_a', 'upc_e', 'ean_13'] });
+      const loop = async () => {
+        if (!scanStream) return;
+        try {
+          const codes = await detector.detect(video);
+          if (codes.length > 0) {
+            stopScanner();
+            lookupUpc(codes[0].rawValue);
+            return;
+          }
+        } catch(e){}
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame(loop);
+    }
+  } catch(e) {}
+}
+
+function stopScanner() {
+  if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
+  document.getElementById('scannerArea').style.display = 'none';
+}
+
+async function lookupUpc(upc) {
+  document.getElementById('bSearch').value = upc;
+  matchBrand(upc);
+  try {
+    const res = await fetch(`https://world.openfoodfacts.org/api/v0/product/${upc}.json`);
+    const d = await res.json();
+    if (d && d.product && d.product.product_name) {
+      document.getElementById('bMatchTxt').textContent = `✓ Scanned: ${d.product.product_name}`;
+    }
+  } catch(e){}
+}
+
+function openRestockModal() { document.getElementById('mRestock').classList.add('open'); }
+function closeRestockModal() { stopScanner(); document.getElementById('mRestock').classList.remove('open'); }
+
+function calc() {
+  const v = {}; VCFG.forEach(x => { const el = document.getElementById('in-'+x.id); v[x.id] = parseFloat(el.value !== '' ? el.value : el.dataset.prev) || 0; });
+  const wx = document.getElementById('wxMode').value, buf = wx === 'live' ? 0 : 1.5;
+  const days = wx==='rain'?[['Today','⛅','68°F','15%'],['Tomorrow','⛈️','64°F','85%'],['Day 3','☀️','71°F','10%']]:(wx==='heat'?[['Today','☀️','89°F','5%'],['Tomorrow','🔥','94°F','0%'],['Day 3','☀️','91°F','10%']]:(liveWxCache||[['Today','⛅','69°F','10%'],['Tomorrow','☀️','72°F','15%'],['Day 3','☀️','74°F','10%']]));
+  document.getElementById('wxGrid').innerHTML = days.map(d=>`<div class="wxd"><b style="color:var(--mu)">${d[0]}</b><div style="font-size:18px;margin:2px 0">${d[1]}</div><b>${d[2]}</b><div style="font-size:9.5px;color:var(--cy)">💧 ${d[3]}</div></div>`).join('');
+  document.getElementById('advTxt').textContent = buf>0 ? `Proactive +1.5 ppm FC buffer active for tomorrow's ${wx==='rain'?'rain storm':'94°F UV heatwave'}.` : 'Live local forecast steady. Standard chlorine target active.';
+
+  const fcCfg = VCFG[0];
+  if (!fcCfg.custom) {
+    fcCfg.iMin = +(Math.max(20,v.cya)*0.075).toFixed(1);
+    fcCfg.t = +(Math.max(20,v.cya)*0.115 + buf).toFixed(1);
+    fcCfg.iMax = +(fcCfg.t + 2.5).toFixed(1);
+    document.getElementById('tg-fc').textContent = `Ideal: ${fcCfg.iMin}–${fcCfg.iMax} ppm | Target: ${fcCfg.t} ppm`;
+    document.getElementById('lg-fc').textContent = `Target: ${fcCfg.t}`;
+  }
+
+  const effTa = Math.max(10, v.alk - v.cya*0.33), tC = (v.temp-32)*5/9;
+  const csi = +(v.pH - ((9.3 + (-13.12*Math.log10(tC+273)+34.55)) - ((Math.log10(Math.max(10,v.ch))-0.4)+Math.log10(effTa)))).toFixed(2);
+  document.getElementById('csiVal').textContent = (csi>0?'+':'')+csi.toFixed(2);
+
+  VCFG.forEach(x => setBar(x.id, v[x.id], x.min, x.max, x.iMin, x.iMax, x.t));
+  setBar('csi',csi,-1,1,-0.3,0.3,0);
+
+  const sc = VOL / 7750, rx = [], phCfg = VCFG[1], alkCfg = VCFG[2], cyaCfg = VCFG[3];
+  if (v.fc < fcCfg.t) { const oz = (fcCfg.t - v.fc)*9.9*sc; rx.push({t:`Add ${oz.toFixed(1)} fl oz ${inv.fc.n}`, d:`Raises FC from ${v.fc} to ${fcCfg.t} ppm (${VOL.toLocaleString()} gal).`, c:inv.fc.c, k:'fc', q:+oz.toFixed(1), $:oz*inv.fc.p}); }
+  if (v.pH > phCfg.iMax) { const oz = ((v.pH-phCfg.t)/0.2)*8.5*(v.alk/90)*sc, lb = +(oz/16).toFixed(2); rx.push({t:`Add ${fmtDry(oz)} ${inv.ph.n}`, d:`Lowers pH from ${v.pH} to ${phCfg.t}.`, c:inv.ph.c, k:'ph', q:lb, $:lb*inv.ph.p}); }
+  if (v.alk < alkCfg.iMin) { const oz = ((alkCfg.t-v.alk)/10)*17.3*sc, lb = +(oz/16).toFixed(2); rx.push({t:`Add ${fmtDry(oz)} ${inv.alk.n}`, d:`Raises TA from ${v.alk} to ${alkCfg.t} ppm.`, c:inv.alk.c, k:'alk', q:lb, $:lb*inv.alk.p}); }
+  if (v.cya < cyaCfg.iMin) { const oz = ((cyaCfg.t-v.cya)/10)*10.3*sc, lb = +(oz/16).toFixed(2); rx.push({t:`Add ${fmtDry(oz)} ${inv.cya.n}`, d:`Raises CYA from ${v.cya} to ${cyaCfg.t} ppm.`, c:inv.cya.c, k:'cya', q:lb, $:lb*inv.cya.p}); }
+
+  document.getElementById('hTitle').textContent = rx.length===0 ? 'Congrats! Water is Balanced' : `${rx.length} Adjustment${rx.length>1?'s':''} Ready`;
+  document.getElementById('hIcon').textContent = rx.length===0 ? '🎉' : '⚡';
+  document.getElementById('tmrwList').innerHTML = notifsPaused ? `<li>🔕 <b>Notifications Paused</b> until pool opens</li>` : tasks.slice(0,2).map(t=>`<li><b>${t.n}</b> — Tomorrow @ ${t.t}</li>`).join('') + `<li>${buf>0?'⛈️ Check skimmer & pre-buffer FC for weather':'☀️ Routine skimmer & filter check'}</li>`;
+  document.getElementById('dCount').textContent = `${rx.length} Action${rx.length===1?'':'s'}`;
+  document.getElementById('prescBox').innerHTML = rx.length===0
+    ? `<div class="pcard" style="border-left-color:var(--ok)"><div><b>✓ All Chemistry & Weather Buffers Met!</b><div style="font-size:11.5px;color:var(--mu)">Zero dosing needed for your ${VOL.toLocaleString()}-gal pool.</div></div></div>`
+    : rx.map(r=>`<div class="pcard"><div><b style="font-size:14px">${r.t}</b><div style="font-size:11.5px;color:var(--mu)">${r.d}</div><span class="tag">${r.c}</span><span class="tag" style="color:var(--ok)">Est. $${r.$.toFixed(2)} • -${r.q} ${inv[r.k].u}</span></div><button class="btn" onclick="dose('${r.k}',${r.q},${r.$},'${r.t}',this)">Apply & Deduct</button></div>`).join('');
+}
+
+function openSeason(mode) {
+  const sc = VOL / 7750;
+  document.getElementById('sTitle').textContent = mode==='open' ? `☀️ Spring Pool Opening (${VOL.toLocaleString()} Gal)` : `❄️ Winter Pool Closing (${VOL.toLocaleString()} Gal)`;
+  document.getElementById('sSteps').innerHTML = mode==='open'
+    ? `1. Remove cover, reconnect pump/filter, and fill water to mid-skimmer.<br>2. Backwash/rinse filter media and start pump.<br>3. Test CYA & pH, then add <b>${(99*sc).toFixed(0)} fl oz Liquid Chlorine (10%)</b>.<br>4. Brush walls & vacuum after 24 hrs.`
+    : `1. Balance pH to <b>7.4–7.6</b>, TA to <b>80–100 ppm</b>, and CSI near <b>0.00</b>.<br>2. Shock with <b>${(79*sc).toFixed(0)} fl oz Liquid Chlorine</b>.<br>3. Add <b>${(12.4*sc).toFixed(1)} fl oz Polyquat 60 Algaecide</b>.<br>4. Lower water below skimmer, drain equipment plugs, and cover.`;
+  document.getElementById('notifActionBox').innerHTML = mode==='open'
+    ? `<button class="btn" style="width:100%;background:var(--ok)" onclick="setPause(false)">🔔 Resume Until Pool Closes</button><div style="margin-top:6px"><small style="color:var(--mu)">Or</small> <u style="font-size:11px;color:var(--bd);cursor:pointer" onclick="setPause(true)">Pause Notifications Until Pool Opens</u></div>`
+    : `<button class="btn" style="width:100%;background:var(--bd);color:#fff" onclick="setPause(true)">🔕 Pause Notifications Until Pool Opens</button><div style="margin-top:6px"><small style="color:var(--mu)">Or</small> <u style="font-size:11px;color:var(--ok);cursor:pointer" onclick="setPause(false)">Resume Until Pool Closes</u></div>`;
+  document.getElementById('mSeason').classList.add('open');
+}
+function setPause(p) { notifsPaused = p; calc(); document.getElementById('mSeason').classList.remove('open'); }
+
+function docAns(q) {
+  const s = (q||'').toLowerCase(), fc = +document.getElementById('in-fc').value||4, ph = +document.getElementById('in-pH').value||7.5, cya = +document.getElementById('in-cya').value||35, sc = VOL/7750;
+  let ans = `Based on your readings (FC: ${fc} ppm, pH: ${ph}), apply any Prescriptions above first and run your filter 8 hours.`;
+  if (s.includes('cloud')) ans = `☁️ <b>Cloudy Water:</b> Balance pH to 7.4, boost FC to <b>${(cya*0.4).toFixed(0)} ppm SLAM level (${((cya*0.4-fc)*9.9*sc).toFixed(0)} fl oz Chlorine)</b>, and backwash filter.`;
+  else if (s.includes('alg')||s.includes('green')) ans = `🦠 <b>Algae Protocol:</b> Shock target is <b>${(cya*0.4).toFixed(0)} ppm FC</b>. Brush walls, add <b>${Math.max(16,((cya*0.4-fc)*9.9*sc)).toFixed(0)} fl oz Liquid Chlorine</b>, and run pump 24/7.`;
+  else if (s.includes('foam')) ans = `🫧 <b>Foamy Water:</b> Use non-foaming <b>Polyquat 60</b> and shock with <b>${(30*sc).toFixed(0)} fl oz Liquid Chlorine</b> to oxidize organics.`;
+  else if (s.includes('burn')||s.includes('eye')) ans = `👀 <b>Eye Irritation:</b> Caused by chloramines or pH outside 7.4–7.6 (yours is ${ph}). Adjust pH to 7.5 and boost FC +3 ppm.`;
+  document.getElementById('docReply').innerHTML = `🩺 <b>Pool Doc:</b> ${ans}`;
+}
+
+function dose(k, q, $, title, btn) { inv[k].q = Math.max(0, +(inv[k].q - q).toFixed(2)); stats.doses++; stats.used += $; logs.unshift({t:title, s:`Auto-deducted ${q} ${inv[k].u}`, a:`-$${$.toFixed(2)}`}); btn.textContent = 'Deducted ✓'; btn.disabled = true; renderAux(); }
+function openVol() { document.getElementById('vGalInp').value = VOL; document.getElementById('mVol').classList.add('open'); }
+function updVolUI() { const m = document.getElementById('vShape').value; document.getElementById('vDirBox').style.display = m==='dir'?'block':'none'; document.getElementById('vDimBox').style.display = m==='dir'?'none':'block'; document.getElementById('vWidRow').style.display = m==='rct'?'block':'none'; calcVolPreview(); }
+function calcVolPreview() { const m = document.getElementById('vShape').value, l = +document.getElementById('vLen').value||20, w = +document.getElementById('vWid').value||12, d = +document.getElementById('vDep').value||3.3; const g = m==='rnd' ? Math.round(Math.PI*Math.pow(l/2,2)*d*7.48) : Math.round(l*w*d*7.48); document.getElementById('vPre').textContent = g.toLocaleString(); return g; }
+function saveVol() { const m = document.getElementById('vShape').value; VOL = m==='dir' ? (+document.getElementById('vGalInp').value||7750) : calcVolPreview(); document.getElementById('vDisp').textContent = VOL.toLocaleString(); document.getElementById('mVol').classList.remove('open'); calc(); }
+function matchBrand(q) { const s = q.toLowerCase(), txt = document.getElementById('bMatchTxt'); if (s.includes('colorx')||s.includes('clorox')||s.includes('ph')) { document.getElementById('rSlot').value='ph'; document.getElementById('rQty').value=5; txt.textContent='✓ Matched: Clorox pH Down (93.2% Sodium Bisulfate • lbs)'; } else if (s.includes('essential')||s.includes('liq')||s.includes('bleach')) { document.getElementById('rSlot').value='fc'; document.getElementById('rQty').value=128; txt.textContent='✓ Matched: Pool Essentials 10% Liquid Chlorine (128 fl oz)'; } }
+function saveRestock() { const k = document.getElementById('rSlot').value, q = +document.getElementById('rQty').value||1, c = +document.getElementById('rCost').value||0, st = document.getElementById('rStore').value||'Store'; inv[k].q = +(inv[k].q + q).toFixed(2); inv[k].p = +(c / q).toFixed(3); inv[k].s = st; stats.spend += c; logs.unshift({t:`Bought +${q} ${inv[k].u} ${inv[k].n}`, s:`${st} • ${inv[k].c}`, a:`$${c.toFixed(2)}`}); closeRestockModal(); renderAux(); calc(); }
+function addTaskPrompt() { const n = prompt('Reminder Task Name:','Vacuum Pool'), t = prompt('Time (e.g. 5:00 PM):','5:00 PM'), d = prompt('Repeat every X days:','2'); if (n) { tasks.push({n, t:t||'5:00 PM', d:+d||1}); renderAux(); calc(); } }
+function renderAux() {
+  document.getElementById('sSpend').textContent = '$'+stats.spend.toFixed(2); document.getElementById('sDoses').textContent = stats.doses; document.getElementById('sUsed').textContent = '$'+stats.used.toFixed(2);
+  document.getElementById('invBox').innerHTML = Object.keys(inv).map(k=>`<div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><b>${inv[k].n}</b><div style="font-size:11px;color:var(--cy)">${inv[k].c}</div><div style="font-size:10.5px;color:var(--mu)">$${inv[k].p.toFixed(3)}/${inv[k].u} • ${inv[k].s}</div></div><b style="color:var(--cy)">${inv[k].q} ${inv[k].u}</b></div>`).join('');
+  document.getElementById('taskBox').innerHTML = tasks.map(t=>`<div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><b>${t.n}</b><div style="font-size:11px;color:var(--mu)">Every ${t.d} day(s) @ ${t.t}</div></div><button class="btn" onclick="this.textContent='Done ✓'">Mark Done</button></div>`).join('');
+  document.getElementById('logBox').innerHTML = logs.map(l=>`<div class="card" style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><div><b>${l.t}</b><div style="color:var(--mu);font-size:11px">${l.s}</div></div><b style="color:var(--cy)">${l.a}</b></div>`).join('');
+}
+function tab(id) { document.querySelectorAll('.tv').forEach(e=>e.classList.remove('act')); document.querySelectorAll('.ni').forEach(e=>e.classList.remove('act')); document.getElementById('t-'+id).classList.add('act'); document.getElementById('n-'+id).classList.add('act'); }
+fetch('https://api.open-meteo.com/v1/forecast?latitude=36.595&longitude=-82.188&daily=temperature_2m_max,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&forecast_days=3').then(r=>r.json()).then(d=>{if(d&&d.daily){const n=['Today','Tomorrow','Day 3'];liveWxCache=[0,1,2].map(i=>[n[i],d.daily.precipitation_probability_max[i]>50?'🌧️':'☀️',Math.round(d.daily.temperature_2m_max[i])+'°F',d.daily.precipitation_probability_max[i]+'%']);calc();}}).catch(()=>{});
+buildVitals(); renderAux(); calc();
+</script>
+</body>
+</html>
